@@ -136,6 +136,31 @@ public:
     ptNode->ptValue = ptValue;
   }
 
+  const DictUnit* DeletePtValue(const Unicode &key) {
+    if (key.begin() == key.end()) {
+      return NULL;
+    }
+
+    TrieNode::NextMap::const_iterator kmIter;
+    TrieNode *ptNode = root_;
+    const DictUnit *tmpPtValue = NULL;
+    for (Unicode::const_iterator citer = key.begin(); citer != key.end(); ++citer) {
+      if (NULL == ptNode->next) {
+        ptNode = NULL;
+      } else {
+        kmIter = ptNode->next->find(*citer);
+        if (ptNode->next->end() != kmIter) {
+          ptNode = kmIter->second;
+        }
+      }
+    }
+    if (ptNode != NULL && ptNode->ptValue != NULL) {
+      tmpPtValue = ptNode->ptValue;
+      ptNode->ptValue = NULL;
+    }
+    return tmpPtValue;
+  }
+
 private:
   void CreateTrie(const vector<Unicode> &keys, const vector<const DictUnit *> &valuePointers) {
     if (valuePointers.empty() || keys.empty()) {

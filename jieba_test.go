@@ -35,6 +35,12 @@ func ExampleJieba() {
 	fmt.Println(s)
 	fmt.Println("添加词典后,精确模式:", strings.Join(words, "/"))
 
+	x.RemoveWord("比特币")
+	s = "比特币"
+	words = x.Cut(s, use_hmm)
+	fmt.Println(s)
+	fmt.Println("移除词后,精确模式:", strings.Join(words, "/"))
+
 	s = "他来到了网易杭研大厦"
 	words = x.Cut(s, use_hmm)
 	fmt.Println(s)

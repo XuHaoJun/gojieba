@@ -50,6 +50,10 @@ public:
     return dict_trie_.InsertUserWord(word, freq, tag);
   }
 
+  bool DeleteUserWord(const string &word) {
+    return dict_trie_.DeleteUserWord(word);
+  }
+
   bool Find(const string &word) { return dict_trie_.Find(word); }
 
   void ResetSeparators(const string &s) {

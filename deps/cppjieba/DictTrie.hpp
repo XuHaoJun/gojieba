@@ -60,6 +60,28 @@ public:
     return true;
   }
 
+  bool DeleteUserWord(const string &word) {
+    Unicode uword;
+    if (!DecodeRunesInString(word, uword)) {
+      XLOG(ERROR) << "Decode " << word << " failed.";
+      return false;
+    }
+    const DictUnit *found = trie_->DeletePtValue(uword);
+    if (found != NULL) {
+      deque<DictUnit>::const_iterator iter;
+      int count = 0;
+      for (iter = active_node_infos_.begin(); iter != active_node_infos_.end(); iter++) {
+        if (&*iter == found) {
+          active_node_infos_.erase(active_node_infos_.begin() + count);
+          delete found;
+          return true;
+        }
+        count = count + 1;
+      }
+    }
+    return false;
+  }
+
   const DictUnit *Find(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end) const {
     return trie_->Find(begin, end);
   }
