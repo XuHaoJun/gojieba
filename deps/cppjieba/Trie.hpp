@@ -136,7 +136,7 @@ public:
     ptNode->ptValue = ptValue;
   }
 
-  const DictUnit* DeletePtValue(const Unicode &key) {
+  const DictUnit *DeletePtValue(const Unicode &key) {
     if (key.begin() == key.end()) {
       return NULL;
     }
@@ -146,7 +146,10 @@ public:
     const DictUnit *tmpPtValue = NULL;
     for (Unicode::const_iterator citer = key.begin(); citer != key.end(); ++citer) {
       if (NULL == ptNode->next) {
-        ptNode = NULL;
+        if (citer != key.end()) {
+          ptNode = NULL;
+        }
+        break;
       } else {
         kmIter = ptNode->next->find(*citer);
         if (ptNode->next->end() != kmIter) {

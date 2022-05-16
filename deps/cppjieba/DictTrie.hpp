@@ -66,20 +66,46 @@ public:
       XLOG(ERROR) << "Decode " << word << " failed.";
       return false;
     }
+
     const DictUnit *found = trie_->DeletePtValue(uword);
+
     if (found != NULL) {
+      bool isDeleted = false;
+
       deque<DictUnit>::const_iterator iter;
       int count = 0;
       for (iter = active_node_infos_.begin(); iter != active_node_infos_.end(); iter++) {
         if (&*iter == found) {
           active_node_infos_.erase(active_node_infos_.begin() + count);
-          delete found;
-          return true;
+          isDeleted = true;
+          break;
         }
         count = count + 1;
       }
+
+      if (!isDeleted) {
+        count = 0;
+        vector<DictUnit>::const_iterator iterv;
+        for (iterv = static_node_infos_.begin(); iterv != static_node_infos_.end(); iterv++) {
+          if (&*iterv == found) {
+            static_node_infos_.erase(static_node_infos_.begin() + count);
+            isDeleted = true;
+            break;
+          }
+          count = count + 1;
+        }
+      }
+
+      delete found;
+
+      return isDeleted;
+    } else {
+      if (uword.size() == 1) {
+        return user_dict_single_chinese_word_.erase(uword[0]) == 1;
+      } else {
+        return false;
+      }
     }
-    return false;
   }
 
   const DictUnit *Find(RuneStrArray::const_iterator begin, RuneStrArray::const_iterator end) const {

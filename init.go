@@ -1,9 +1,9 @@
 package gojieba
 
 import (
-	"github.com/yanyiwu/gojieba/deps/cppjieba"
-	"github.com/yanyiwu/gojieba/deps/limonp"
-	"github.com/yanyiwu/gojieba/dict"
+	"github.com/xuhaojun/gojieba/deps/cppjieba"
+	"github.com/xuhaojun/gojieba/deps/limonp"
+	"github.com/xuhaojun/gojieba/dict"
 )
 
 func init() {

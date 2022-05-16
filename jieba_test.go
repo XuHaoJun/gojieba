@@ -35,12 +35,6 @@ func ExampleJieba() {
 	fmt.Println(s)
 	fmt.Println("添加词典后,精确模式:", strings.Join(words, "/"))
 
-	x.RemoveWord("比特币")
-	s = "比特币"
-	words = x.Cut(s, use_hmm)
-	fmt.Println(s)
-	fmt.Println("移除词后,精确模式:", strings.Join(words, "/"))
-
 	s = "他来到了网易杭研大厦"
 	words = x.Cut(s, use_hmm)
 	fmt.Println(s)
@@ -105,6 +99,16 @@ func TestJieba(t *testing.T) {
 	s = "我来到北京清华大学"
 	expected = "我/来到/北京/清华/清华大学/华大/大学"
 	actual = strings.Join(x.CutAll(s), "/")
+	if expected != actual {
+		t.Error(actual)
+	}
+
+	x.AddWord("比特币")
+	w2 := "比特币"
+	x.RemoveWord(w2)
+	s = "比特币"
+	expected = "比特/币"
+	actual = strings.Join(x.Cut(s, true), "/")
 	if expected != actual {
 		t.Error(actual)
 	}
